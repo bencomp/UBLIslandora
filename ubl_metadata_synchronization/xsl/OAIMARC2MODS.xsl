@@ -1239,6 +1239,31 @@ Revision 1.02 - Added Log Comment  2003/03/24 19:37:42  ckeith
 						</xsl:for-each>
 					</originInfo>
 				</xsl:when>
+				<xsl:when test="$hit='264' and @ind2='0'">
+					<originInfo eventType="production">
+						<xsl:call-template name="xxx880"/>
+						<!--<xsl:for-each select="../marc:datafield[@tag=260 and marc:subfield[@code='a' or code='b' or @code='c' or code='g']]">
+							<xsl:call-template name="z2xx880"/>
+						</xsl:for-each>-->
+						<xsl:if test="marc:subfield[@code='a']">
+							<place>
+								<placeTerm type="text">
+									<xsl:value-of select="marc:subfield[@code='a']"/>
+								</placeTerm>
+							</place>
+						</xsl:if>
+						<xsl:if test="marc:subfield[@code='b']">
+							<publisher>
+								<xsl:value-of select="marc:subfield[@code='b']"/>
+							</publisher>
+						</xsl:if>
+						<xsl:if test="marc:subfield[@code='c']">
+							<dateOther type="production">
+								<xsl:value-of select="marc:subfield[@code='c']"/>
+							</dateOther>
+						</xsl:if>
+					</originInfo>
+				</xsl:when>
 				<xsl:when test="$hit='300'">
 					<physicalDescription>
 						<xsl:for-each select="../marc:datafield[@tag=300]">
