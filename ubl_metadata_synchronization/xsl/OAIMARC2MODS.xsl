@@ -1023,6 +1023,14 @@ Revision 1.02 - Added Log Comment  2003/03/24 19:37:42  ckeith
 				</xsl:if>
 			</xsl:if>
 
+			<!-- Ben's hack to get dateCreated from 008 -->
+			<xsl:if test="($controlField008-6='r') and ($leader6='k')">
+				<xsl:if test="$controlField008-11-14">
+					<dateCreated encoding="marc">
+						<xsl:value-of select="$controlField008-11-14"/>
+					</dateCreated>
+				</xsl:if>
+			</xsl:if>
 
 			<!-- tmee 1.77 008-06 dateIssued for value 's' 1.89 removed 20130920 
 			<xsl:if test="$controlField008-6='s'">
@@ -3077,6 +3085,7 @@ Revision 1.02 - Added Log Comment  2003/03/24 19:37:42  ckeith
 	<xsl:template name="relatedTitle76X-78X">
 		<xsl:for-each select="marc:subfield[@code='t']">
 			<titleInfo>
+				<xsl:call-template name="yyy880"/>
 				<title>
 					<xsl:call-template name="chopPunctuation">
 						<xsl:with-param name="chopString">
@@ -4126,6 +4135,10 @@ Revision 1.02 - Added Log Comment  2003/03/24 19:37:42  ckeith
 			<xsl:when test="$sf06a='490'">
 				<xsl:call-template name="createRelatedItemFrom490"/>
 			</xsl:when>
+			<!-- Add translated originInfo (Ben's hack) -->
+			<!--<xsl:when test="$sf06a='776'">
+				<xsl:call-template name="relatedItem76X-78X"/>
+			</xsl:when>-->
 		</xsl:choose>
 	</xsl:template>
 
@@ -5535,7 +5548,8 @@ Revision 1.02 - Added Log Comment  2003/03/24 19:37:42  ckeith
 
 	<xsl:template name="createAccessConditionFrom506">
 		<accessCondition type="restriction on access">
-		<!--	<xsl:call-template name="xxx880"/> --> 
+		<!--	<xsl:call-template name="xxx880"/> -->
+ 
 			<xsl:call-template name="subfieldSelect">
 		<!--		<xsl:with-param name="codes">abcd35</xsl:with-param> -->
 				<xsl:with-param name="codes">a</xsl:with-param>
